@@ -93,6 +93,7 @@ $client = Aws\Ses\SesClient::factory([
   'region'  => 'us-east-1',
 ]);
 $result = $client->sendBulkTemplatedEmail($email);
+print_r($result);
 $statuses = $result->get('Status');
 
 
