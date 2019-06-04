@@ -15,6 +15,8 @@
  *  - year
  */
 
+require '../vendor/autoload.php';
+
 // In this example, the variables are NOT user-specific.
 $template_data = [
   'preheader' => "Open this to read all about some great stuff!",
@@ -28,8 +30,8 @@ $template_data = [
       'url' => 'https://www.cnn.com/2019/06/03/tech/itunes-apple-wwdc/index.html',
     ],
     [
-      'img_url' => 'https://cdn.cnn.com/cnnnext/dam/assets/190603144803-06-apple-wwdc-2019-itunes-apps-screengrab-exlarge-169.jpg',
-      'img_alt' => 'James Holzhauer',
+      'img_url' => 'https://cdn.cnn.com/cnnnext/dam/assets/190603193710-emma-boettcher-jeopardy-0603-medium-plus-169.jpg',
+      'img_alt' => 'Emma Boettcher',
       'title' => "James Holzhauer's historic 'Jeopardy!' winning streak is over",
       'subhead' => 'James Holzhauer\'s historic "Jeopardy!" winning streak came to an end Monday night -- and it wasn\'t even a wrong answer that undid him.',
       'url' => 'https://www.cnn.com/2019/06/03/entertainment/james-holzhauer-jeopardy-streak-over-loses-trnd/index.html',
@@ -54,7 +56,7 @@ $recipients = [
 ];
 
 $email = [
-  'ConfigurationSetName' => 'RYOESP-Sample',
+  'ConfigurationSetName' => 'TestSet',
   'Source' => '"Purdy Cool Stuff" <stuff@purdy.cool>',
   'ReplyToAddresses' => ['"Jason Purdy" <jason@purdy.cool>'],
   'DefaultTags' => [
@@ -65,7 +67,32 @@ $email = [
   ],
   'DefaultTemplateData' => json_encode($template_data),
   'Destinations' => [],
-  'Template' => $template,
+  'Template' => 'RYOESP-Sample',
 ];
+
+$fake_id = 0;
+foreach ($recipients as $recipient) {
+  $fake_id++;
+  $email['Destinations'][] = [
+    'Destination' => [
+      'ToAddresses' => [$recipient],
+    ],
+    'ReplacementTags' => [
+      [
+        'Name' => 'SID',
+        'Value' => $fake_id,
+      ],
+    ],
+    'ReplacementTemplateData' => json_encode(['email' => $recipient])
+  ];
+}
+
+$client = Aws\Ses\SesClient::factory([
+  'profile' => 'default',
+  'version' => 'latest',
+  'region'  => 'us-east-1',
+]);
+$result = $client->sendBulkTemplatedEmail($email);
+$statuses = $result->get('Status');
 
 

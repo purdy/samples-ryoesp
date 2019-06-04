@@ -32,6 +32,7 @@ $tags_to_convert = [
   '<?php echo $article[\'subhead\']; ?>' => '{{subhead}}',
   '<?php echo $article[\'url\']; ?>' => '{{url}}',
   '<?php endforeach; ?>' => '{{/each}}',
+  '<?php echo $email; ?>' => '{{email}}',
   '<?php echo date(\'Y\'); ?>' => '{{year}}',
 ];
 

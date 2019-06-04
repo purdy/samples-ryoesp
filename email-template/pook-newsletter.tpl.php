@@ -155,6 +155,9 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
 
                           <br><br>
 
+                          This email was sent to <?php echo $email; ?>.
+                          <br><br>
+                          
                           <a href="http://litmus.com" style="color: #999999;" target="_blank">View Online</a>
                           &nbsp; &bull; &nbsp;
                           <a href="http://litmus.com" style="color: #999999;" target="_blank">Unsubscribe</a>
